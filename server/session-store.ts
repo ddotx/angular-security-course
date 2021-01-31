@@ -13,6 +13,21 @@ class SessionStore {
     this.sessions[sessionId] = new Session(sessionId, user)
   }
 
+  // * Check current user session on req
+  findUserBySessionId(sessionId: string): User | undefined {
+    const session = this.sessions[sessionId]
+
+    return this.isSessionValid(sessionId) ? session.user : undefined
+  }
+
+  // * Secure REST Endpoint
+  isSessionValid(sessionId: string): boolean {
+
+    const session = this.sessions[sessionId]
+
+    return session && session.isValid()
+  }
+
 
 }
 
