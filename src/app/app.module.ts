@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LessonsComponent } from './lessons/lessons.component';
@@ -10,16 +10,7 @@ import {LessonsService} from "./services/lessons.service";
 import {ReactiveFormsModule} from "@angular/forms";
 
 import {AuthService} from "./services/auth.service";
-
-
-
-
-
-
-
-
-
-
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 @NgModule({
@@ -35,7 +26,12 @@ import {AuthService} from "./services/auth.service";
   ],
   providers: [
       LessonsService,
-      AuthService
+      AuthService,
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true
+      }
   ],
   bootstrap: [AppComponent]
 })
